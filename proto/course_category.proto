@@ -1,0 +1,44 @@
+syntax = "proto3";
+package pb; //muito comum usarmos "pb" para o package
+//informar onde o pacote será instalado (depende da linguagem de program. usada)
+option go_package = "internal/pb";
+
+// criando o "mundo" da minha categoria
+message Category {
+    // os números abaixo são simplesmente a ordem conforme vamos inserindo os atributos
+    string id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message CreateCategoryRequest {
+    string name = 1;
+    string description = 2;
+}
+
+// sempre que formos receber um resultado de uma Categoria, posso retornar diversas Categorias
+message CategoryResponse {
+    // por exemplo aqui, a minha response é do tipo "Category" e tem a variável "category"
+    Category category = 1;
+}
+
+// Criando uma mensagem para eu receber diversas (repeated) categorias do tipo Category
+message CategoryList {
+    repeated Category categories = 1;
+}
+
+message blank {}
+
+// criando um serviço de Categoria para trabalhar com o RPC
+service CategoryService {
+    // faz a definição do serviço (como é a req. e a resp.)
+    rpc CreateCategory(CreateCategoryRequest) returns (CategoryResponse) {}
+    rpc ListCategories(blank) returns (CategoryList) {}
+}
+
+
+// Comando no terminal para gerar os arquivos proto
+// $ protoc --go_out=. --go-grpc_out=. proto/course_category.proto
+// No "--go_out=." (o ponto é o contexto onde os arquivos das entidades serão gravados)
+// O "--go-grpc_out=."" (vai gerar o arquivo e as interfaces para conseguirmos conversar com as entidades usando o gRPC)
+// O "proto/course_category.proto" é o caminho deste arquivo proto.
