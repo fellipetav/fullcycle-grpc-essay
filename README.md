@@ -1,0 +1,1 @@
+A repository made for study purposes: an essay using gRPC interacting with a Golang server via Evans client.
