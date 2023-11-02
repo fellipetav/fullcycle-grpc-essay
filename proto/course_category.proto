@@ -29,11 +29,17 @@ message CategoryList {
 
 message blank {}
 
+message CategoryGetRequest {
+    string id = 1;
+}
+
 // criando um serviço de Categoria para trabalhar com o RPC
 service CategoryService {
     // faz a definição do serviço (como é a req. e a resp.)
     rpc CreateCategory(CreateCategoryRequest) returns (CategoryResponse) {}
     rpc ListCategories(blank) returns (CategoryList) {}
+    // aqui, não uso (blank) porque eu preciso pegar uma category em específico
+    rpc GetCategory(CategoryGetRequest) returns (Category) {}
 }
 
 

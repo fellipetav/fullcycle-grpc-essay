@@ -36,6 +36,7 @@ func (c *CategoryService) CreateCategory(ctx context.Context, in *pb.CreateCateg
 	}, nil
 }
 
+// método para Listar as categorias usando o método [FindAll()] do /database/category.go
 func (c *CategoryService) ListCategories(ctx context.Context, in *pb.Blank) (*pb.CategoryList, error) {
 	categories, err := c.CategoryDB.FindAll()
 	if err != nil {
@@ -55,4 +56,25 @@ func (c *CategoryService) ListCategories(ctx context.Context, in *pb.Blank) (*pb
 	}
 
 	return &pb.CategoryList{Categories: categoriesResponse}, nil
+}
+
+// GetCategory returno uma categoria específica inteira em função do id fornecido na request.
+//
+// ctx - O objeto de contexto.
+// in - O objeto GetCategoryRequest que contém os parâmetros de entrada (o Id).
+// *pb.CategoryResponse - O objeto de resposta que contém as informações da categoria.
+// erro - Um objeto de erro que será nulo caso tenhamos sucesso.
+func (c *CategoryService) GetCategory(ctx context.Context, in *pb.CategoryGetRequest) (*pb.Category, error) {
+	category, err := c.CategoryDB.Find(in.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	categoryResponse := &pb.Category {
+		Id:				category.ID,
+		Name:			category.Name,
+		Description:  	category.Description,
+	}
+	
+	return 	categoryResponse, nil
 }
