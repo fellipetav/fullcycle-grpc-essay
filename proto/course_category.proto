@@ -40,6 +40,10 @@ service CategoryService {
     rpc ListCategories(blank) returns (CategoryList) {}
     // aqui, não uso (blank) porque eu preciso pegar uma category em específico
     rpc GetCategory(CategoryGetRequest) returns (Category) {}
+    // envia um stream de dados de [CategoryRequest] e retorna uma lista de categorias
+    rpc CreateCategoryStream(stream CreateCategoryRequest) returns (CategoryList) {}
+    // stream bidirecional
+    rpc CreateCategoryStreamBidirectional(stream CreateCategoryRequest) returns (stream Category) {}
 }
 
 
